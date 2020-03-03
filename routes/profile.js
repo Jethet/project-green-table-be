@@ -1,19 +1,19 @@
 // routes/profile.js
 const express = require('express');
-const User = require('./../models/User');
+const User = require('../models/User');
 const profileRouter = express.Router();
 const bcrypt = require('bcrypt')
 const zxcvbn = require("zxcvbn");
 const saltRounds = 10;
 
 
-profileRouter.get('/', (req, res, next) => {
-    User.findById(req.session.currentUser._id)
-    .then(user => {
-        res.render('profile',{user})
-    })
-    .catch(err => console.log(err))
-});
+// profileRouter.get('/', (req, res, next) => {
+//     User.findById(req.session.currentUser._id)
+//     .then(user => {
+//         res.render('profile',{user})
+//     })
+//     .catch(err => console.log(err))
+// });
 
 profileRouter.post('/edit',(req,res, next)=>{
     const {username} = req.body;
@@ -35,10 +35,10 @@ profileRouter.get('/delete', function(req, res, next) {
     })
     .then(user => {
        req.session.destroy()
-      .then(() => res.redirect("/"))
+      .then(() => res.redirect('/'))
       .catch(err => console.log(err));
     })
-    .catch(err=>console.log(err))
+    .catch(err => console.log(err))
   });
 
 module.exports = profileRouter;

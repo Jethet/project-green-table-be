@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('./../models/User');
+const User = require('../models/User');
 const signoutRouter  = require('signout');
 
 
@@ -10,5 +10,6 @@ signoutRouter.get('/', (req, res, next) => {
     })
     .catch(err => console.log(err))
 });
+
 
 module.exports = signoutRouter;

@@ -2,9 +2,7 @@
 const express = require('express');
 const User = require('../models/User');
 const profileRouter = express.Router();
-const bcrypt = require('bcrypt')
-const zxcvbn = require("zxcvbn");
-const saltRounds = 10;
+const Table = require('./Table');
 
 
 profileRouter.get('/', (req, res, next) => {
@@ -18,8 +16,6 @@ profileRouter.get('/', (req, res, next) => {
 profileRouter.post('/edit',(req,res, next)=>{
     const {username} = req.body;
     const id = req.session.currentUser._id;
-    // const salt = bcrypt.genSaltSync(saltRounds);  
-    // const hashedPassword = bcrypt.hashSync(password, salt);
 
     User.updateOne({_id: id},{username})
     .then(user => {

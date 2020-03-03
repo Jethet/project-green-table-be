@@ -9,7 +9,7 @@ const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
 require('dotenv').config();
 
-const auth = require('./routes/auth-views/auth');
+const auth = require('./routes/auth');
 
 
 // MONGOOSE CONNECTION

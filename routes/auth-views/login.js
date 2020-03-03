@@ -1,7 +1,7 @@
 // routes/login.js
 const express = require('express');
 const loginRouter = express.Router();
-const User = require('../models/User');
+const User = require('../../models/User');
 
 
 // POST /login

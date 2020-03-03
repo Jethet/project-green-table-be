@@ -7,13 +7,13 @@ const zxcvbn = require("zxcvbn");
 const saltRounds = 10;
 
 
-// profileRouter.get('/', (req, res, next) => {
-//     User.findById(req.session.currentUser._id)
-//     .then(user => {
-//         res.render('profile',{user})
-//     })
-//     .catch(err => console.log(err))
-// });
+profileRouter.get('/', (req, res, next) => {
+    User.findById(req.session.currentUser._id)
+    .then(user => {
+        res.render('profile',{user})
+    })
+    .catch(err => console.log(err))
+});
 
 profileRouter.post('/edit',(req,res, next)=>{
     const {username} = req.body;

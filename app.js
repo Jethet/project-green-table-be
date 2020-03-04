@@ -11,6 +11,7 @@ require('dotenv').config();
 
 const authRouter = require('./routes/authRouter');
 const profileRouter = require('./routes/profileRouter');
+const tableRouter = require('./routes/tableRouter');
 
 
 // MONGOOSE CONNECTION
@@ -70,7 +71,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ROUTER MIDDLEWARE
 app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
-// app.use('/table', tableRouter);
+app.use('/table', tableRouter);
 
 
 // 404 

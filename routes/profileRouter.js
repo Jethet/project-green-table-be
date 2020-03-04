@@ -29,12 +29,15 @@ profileRouter.put('/', async (req,res, next) => {
 };
 });
 
-// DELETE	/profile/:id/delete
-profileRouter.get('/', async (req, res, next) => {
+// DELETE	/profile
+profileRouter.delete('/', async (req, res, next) => {
 
   try {
-      const id = await User.findById(req.session.currentUser._id)
-      req.session.destroy()
+      await User.findByIdAndRemove(req.session.currentUser._id);
+      req.session.destroy(function(err){
+        res.status(204).send()
+      })
+      
     } catch(err) {
       res.status(500).json(err)
     };

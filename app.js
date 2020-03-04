@@ -9,7 +9,8 @@ const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
 require('dotenv').config();
 
-const auth = require('./routes/auth');
+const authRouter = require('./routes/authRouter');
+const profileRouter = require('./routes/profileRouter');
 
 
 // MONGOOSE CONNECTION
@@ -47,7 +48,7 @@ app.use(
   session({
     store: new MongoStore({
       mongooseConnection: mongoose.connection,
-      ttl: 24 * 60 * 60, // 1 day
+      ttl: 24 * 60 * 60 * 60, // 60 days
     }),
     secret: process.env.SECRET_SESSION,
     resave: true,
@@ -67,7 +68,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // ROUTER MIDDLEWARE
-app.use('/auth', auth);
+app.use('/auth', authRouter);
+app.use('/profile', profileRouter);
+// app.use('/table', tableRouter);
 
 
 // 404 

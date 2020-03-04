@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 const User = require('./User');
 
 const tableSchema = new Schema({
-    date: {type: Date, required: true},
+    dateAndTime: {type: Date, required: true},
     location: {address: String, city: String},
-    userId: {type: Schema.Types.ObjectId, ref: User},
-    detailsTable: {type: Object},
+    userId: {type: Schema.Types.ObjectId, ref: 'User'},
+    detailsTable: {type: Object},//not sure what this is for - pending
     guests: [
         {
             userId: {type: Schema.Types.ObjectId, ref: 'User'},
@@ -16,10 +16,11 @@ const tableSchema = new Schema({
     foodAndDrinks: [
         {
             dishType: {type: String, enum: ['hotDish', 'coldDish', 'snack', 'desert', 'nonAlcoholDrink', 'alcoholDrink']},
-            isVegetarian: Boolean,
-            isVegan: Boolean,
-            isGlutenFree: Boolean,
-            userId: {type: ObjectId, ref: 'User'}
+            isVegetarian: {type: Boolean, default: false},
+            isVegan: {type: Boolean, default: false},
+            isGlutenFree: {type: Boolean, default: false},
+            isAlcohol: {type: Boolean, default: false},
+            userId: {type: Schema.Types.ObjectId, ref: 'User'}
         }
     ]
 });

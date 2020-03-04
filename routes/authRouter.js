@@ -1,9 +1,10 @@
 const express = require("express");
-const router = express.Router();
+const authRouter = express.Router();
 const createError = require("http-errors");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const User = require("../models/User");
+const Table = require("../models/Table");
 
 // HELPER FUNCTIONS
 const {
@@ -12,8 +13,8 @@ const {
   validationLogin
 } = require("../helpers/middlewares");
 
-// POST '/auth/signup'
-router.post('/signup', isNotLoggedIn, validationLogin, async (req, res, next) => {
+// POST    '/auth/signup'
+authRouter.post('/signup', isNotLoggedIn, validationLogin, async (req, res, next) => {
   const { username, password } = req.body;
 
   try {																									 // projection
@@ -23,6 +24,7 @@ router.post('/signup', isNotLoggedIn, validationLogin, async (req, res, next) =>
     else {
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashPass = bcrypt.hashSync(password, salt);
+
       const newUser = await User.create({ username, password: hashPass });
 
       newUser.password = "*";
@@ -39,7 +41,7 @@ router.post('/signup', isNotLoggedIn, validationLogin, async (req, res, next) =>
 );
 
 // POST '/auth/login'
-router.post('/login', isNotLoggedIn, validationLogin, async (req, res, next) => {
+authRouter.post('/login', isNotLoggedIn, validationLogin, async (req, res, next) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username }) ;
@@ -66,19 +68,19 @@ router.post('/login', isNotLoggedIn, validationLogin, async (req, res, next) => 
 );
 
 // POST '/auth/logout'
-router.post('/logout', isLoggedIn, (req, res, next) => {
+authRouter.post('/logout', isLoggedIn, (req, res, next) => {
   req.session.destroy();
   res
     .status(204)  //  No Content
     .send();
 });
 
-// GET '/auth/me'
-router.get('/me', isLoggedIn, (req, res, next) => {
+// GET '/auth/me' - used by Reach frontend when React app loads for the first time
+authRouter.get('/me', isLoggedIn, (req, res, next) => {
   const currentUserSessionData = req.session.currentUser;
   currentUserSessionData.password = '*';
   
   res.status(200).json(currentUserSessionData);
 });
 
-module.exports = router;
+module.exports = authRouter;

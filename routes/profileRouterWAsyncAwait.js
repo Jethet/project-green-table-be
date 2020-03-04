@@ -5,12 +5,15 @@ const profileRouter = express.Router();
 const Table = require('./Table');
 
 
-profileRouter.get('/', (req, res, next) => {
-    User.findById(req.session.currentUser._id)
-    .then(user => {
-        res.render('profile',{user})
-    })
-    .catch(err => console.log(err))
+profileRouter.get('/', async (req, res, next) => {
+
+  try {
+    const user = await User.findById(req.session.currentUser._id)
+    // const foundTables = await Table.find({ username: user.username }) pseudo example
+    res.status(200).json(user)
+  } catch (err) {
+    res.status(500).json(err)
+  }
 });
 
 profileRouter.post('/edit',(req,res, next)=>{

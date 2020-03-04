@@ -69,7 +69,7 @@ To use the app, someone has to sign up. They have to provide their username, cit
 | `/`                    | HomePage    | public `<Route>`      | Home page
 | `/signup`              | SignupPage       | anon only  `<AnonRoute>`   | Signup form, link to login, navigate to CalendarPage after signup
 | `/login`               | LoginPage        | anon only `<AnonRoute>`    | Login form, link to signup, navigate to CalendarPage after login         
-| `/calendar`            | CalendarPage     | user only `<PrivateRoute>` | Show month calendar
+| `/calendar`            | CalendarPage     | user only `<PrivateRoute>` | Show month calendar   BACKLOG
 | `/table`               | CreateTablePage  | user only `<PrivateRoute>` | Shows form to create a table                                           
 | `/table/:id`           | TableDetailPage  | user only `<PrivateRoute>` | Shows details of table created by host                              
 | `/table/:id/update`    | TableUpdatePage  | user only `<PrivateRoute>` | Shows table for update or delete action
@@ -85,7 +85,7 @@ To use the app, someone has to sign up. They have to provide their username, cit
 - SplashPage
 - SignupPage
 - LoginPage
-- CalendarPage
+- CalendarPage  BACKLOG
 - CreateTablePage
 - InvitationPage
 - TableDetailPage

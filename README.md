@@ -69,7 +69,7 @@ To use the app, someone has to sign up. They have to provide their username, cit
 | `/`                    | HomePage    | public `<Route>`      | Home page
 | `/signup`              | SignupPage       | anon only  `<AnonRoute>`   | Signup form, link to login, navigate to CalendarPage after signup
 | `/login`               | LoginPage        | anon only `<AnonRoute>`    | Login form, link to signup, navigate to CalendarPage after login         
-| `/calendar`            | CalendarPage     | user only `<PrivateRoute>` | Show month calendar
+| `/calendar`            | CalendarPage     | user only `<PrivateRoute>` | Show month calendar   BACKLOG
 | `/table`               | CreateTablePage  | user only `<PrivateRoute>` | Shows form to create a table                                           
 | `/table/:id`           | TableDetailPage  | user only `<PrivateRoute>` | Shows details of table created by host                              
 | `/table/:id/update`    | TableUpdatePage  | user only `<PrivateRoute>` | Shows table for update or delete action
@@ -85,7 +85,7 @@ To use the app, someone has to sign up. They have to provide their username, cit
 - SplashPage
 - SignupPage
 - LoginPage
-- CalendarPage
+- CalendarPage  BACKLOG
 - CreateTablePage
 - InvitationPage
 - TableDetailPage
@@ -113,8 +113,9 @@ To use the app, someone has to sign up. They have to provide their username, cit
 |---|---|---|                                         
 | `POST`  | `/login`  | Sends Login JSON data to the server with email and password.        
 | `POST`  | `/signup` | Sends Sign Up JSON data to the server with name, email and password. Creates user in the DB.
-| `GET`   | `/signout` | Sends signout request to the server. Server destroys login session.     
-| `PUT`  | `/profile/:id`| Private route. Sends edit-profile JSON data to server. Server updates user in DB.
+| `GET`   | `/signout` | Sends signout request to the server. Server destroys login session.
+| `GET`   | `/profile` | Get current user profile JSON data
+| `PUT`  | `/profile/:id`| Private route. Sends updated profile JSON data to server. Server updates user in DB.
 | `DELETE`| `/profile/:id`| Private route. Deletes the user's profile from the server and updates DB. 
 | `POST`  | `/table` | Sends Table JSON data to server, create new table.
 | `GET`  | `/table/:id`  | Get one table JSON data from server.
@@ -132,14 +133,13 @@ To use the app, someone has to sign up. They have to provide their username, cit
 User model
 
 ```javascript
-{
-  username: {type: String, required: true} ,
-  email: {type: String, required: true} ,
+{ username: {type: String, required: true},
+  email: {type: String},
   password: {type: String, required: true},
   imageURL: String,
   city: String,
-  preferences: {vegan: Boolean, glutenFree: Boolean, nonAlcohol: Boolean, vegetarian: Boolean}
-  table: [{type: ObjectId, ref: 'Table'}]
+  preferences: {vegetarian: Boolean, vegan: Boolean, glutenFree: Boolean, nonAlcohol: Boolean},
+  table: [{type: Schema.Types.ObjectId, ref: 'Table'}]
 }
 ```
 
@@ -147,26 +147,42 @@ Table model
 
 ```javascript
 {
-  date: {type: Date, required: true},
-  location: {address: String, city: String},
-  userId: {type: Schema.Types.ObjectId, ref: 'User'},
-  detailsTable: {type: Object},
-  guests: [
-    {
-     userId: { type: ObjectId, ref: 'User' }, 
-     isComing: {type: Boolean, default: true}
-    }
-  ],
-  foodAndDrinks: [
-    {
-     dishType: {type: String, enum: ['hotDish','coldDish', 'snack', 'desert', 'drinkNonAlcohol', 'drinkAlcohol'] },
-     isVegetarian: Boolean,
-     isVegan: Boolean, 
-     isGlutenFree: Boolean, 
-     userId: { type: ObjectId, ref: 'User' }
-    }
-  ]
+    dateAndTime: {type: String, required: true},
+    location: {address: String, city: String},
+    userId: {type: Schema.Types.ObjectId, ref: 'User'},
+    foodAndDrinks: [{type: Schema.Types.ObjectId, ref: 'FoodAndDrinks'}],
+    guests: [
+        {
+            userId: {type: Schema.Types.ObjectId, ref: 'User'},
+            isComing: {type: Boolean, default: true}
+        }
+    ],
 }
+```
+
+FoodAndDrinks model
+
+```javascript
+
+dishType: {
+    type: String,
+    enum: [
+      "hotDish",
+      "coldDish",
+      "snack",
+      "desert",
+      "nonAlcoholDrink",
+      "alcoholDrink"
+    ]
+  },
+  isVegetarian: { type: Boolean, default: false },
+  isVegan: { type: Boolean, default: false },
+  isGlutenFree: { type: Boolean, default: false },
+  isAlcohol: { type: Boolean, default: false },
+  userId: { type: Schema.Types.ObjectId, ref: "User" },
+  userType: { type: String, enum: ["guest", "host"] }
+}
+
 ```
 
 <br>
@@ -174,6 +190,7 @@ Table model
 
 ## Backlog
 
+- Include calendar with options to click and create tables or see table details
 - Offer guest option to accept/decline invitation
 - Offer user option to see address on map
 - Page with links to suitable recipe websites

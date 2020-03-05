@@ -59,6 +59,14 @@ tableRouter.post("/", isLoggedIn, async (req, res, next) => {
   }
 });
 
+//GET all tables for logged in user  /table/all
+tableRouter.get("/all", isLoggedIn, async (req, res, next) => {
+  const userId = req.session.currentUser._id;
+  const allTables = await Table.find({ userId });
+
+  res.status(200).json(allTables);
+});
+
 // GET      /table/:id  - gets one table JSON data from server
 tableRouter.get("/:id", isLoggedIn, async (req, res, next) => {
   try {

@@ -9,7 +9,8 @@ const FoodAndDrinks = require("../models/FoodAndDrinks");
 tableRouter.post("/", isLoggedIn, async (req, res, next) => {
   try {
     const {
-      dateAndTime,
+      date,
+      time,
       address,
       city,
       foodAndDrinksArray,
@@ -17,7 +18,8 @@ tableRouter.post("/", isLoggedIn, async (req, res, next) => {
     } = req.body; // request body
 
     console.log({
-      dateAndTime,
+      date,
+      time,
       address,
       city,
       foodAndDrinksArray,
@@ -43,7 +45,8 @@ tableRouter.post("/", isLoggedIn, async (req, res, next) => {
     });
 
     const table = await Table.create({
-      dateAndTime,
+      date,
+      time,
       location: { address, city },
       userId: user._id,
       foodAndDrinks: createdFoodAndDrinksIds,
@@ -69,7 +72,8 @@ tableRouter.get("/:id", isLoggedIn, async (req, res, next) => {
 // PUT      /table/:id  - updates a table's JSON data and sends to server
 tableRouter.put("/:id", isLoggedIn, async (req, res, next) => {
   const {
-    dateAndTime,
+    date,
+    time,
     address,
     city,
     foodAndDrinksArray,
@@ -81,7 +85,8 @@ tableRouter.put("/:id", isLoggedIn, async (req, res, next) => {
     const tableUpdated = await Table.updateOne(
       { _id: id },
       {
-        dateAndTime,
+        date,
+        time,
         address,
         city,
         foodAndDrinksArray,

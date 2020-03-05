@@ -1,11 +1,12 @@
 const express = require("express");
+const { isLoggedIn } = require("../helpers/middlewares.js");
 const Table = require("../models/Table");
 const User = require("../models/User");
 const tableRouter = express.Router();
 const FoodAndDrinks = require("../models/FoodAndDrinks");
 
 // POST     /table    Sends table JSON data to server, create new table
-tableRouter.post("/", async (req, res, next) => {
+tableRouter.post("/", isLoggedIn, async (req, res, next) => {
   try {
     const {
       dateAndTime,
@@ -56,7 +57,7 @@ tableRouter.post("/", async (req, res, next) => {
 });
 
 // GET      /table/:id  - gets one table JSON data from server
-tableRouter.get("/:id", async (req, res, next) => {
+tableRouter.get("/:id", isLoggedIn, async (req, res, next) => {
   try {
     const table = await Table.findById(req.params.id); //this params refers to what is after the /: in the url
     res.status(200).json(table);
@@ -65,8 +66,36 @@ tableRouter.get("/:id", async (req, res, next) => {
   }
 });
 
+// PUT      /table/:id  - updates a table's JSON data and sends to server
+tableRouter.put("/:id", isLoggedIn, async (req, res, next) => {
+  const {
+    dateAndTime,
+    address,
+    city,
+    foodAndDrinksArray,
+    guestsIdsArray
+  } = req.body;
+
+  const id = req.params.id; // from the cookie and session
+  try {
+    const tableUpdated = await Table.updateOne(
+      { _id: id },
+      {
+        dateAndTime,
+        address,
+        city,
+        foodAndDrinksArray,
+        guestsIdsArray
+      }
+    );
+    res.status(200).json(tableUpdated);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // DELETE	/table/:id
-tableRouter.delete("/", async (req, res, next) => {
+tableRouter.delete("/:id", isLoggedIn, async (req, res, next) => {
   try {
     await Table.findByIdAndRemove(req.params.id);
     req.session.destroy(function(err) {

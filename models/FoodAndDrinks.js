@@ -19,7 +19,7 @@ const foodAndDrinksSchema = new Schema({
   isGlutenFree: { type: Boolean, default: false },
   isAlcohol: { type: Boolean, default: false },
   userId: { type: Schema.Types.ObjectId, ref: "User" },
-  userType: { type: String, enum: ["guest", "host"] }
+  tableId: { type: Schema.Types.ObjectId, ref: "Table" }
 });
 
 const FoodAndDrinks = mongoose.model("FoodAndDrinks", foodAndDrinksSchema);

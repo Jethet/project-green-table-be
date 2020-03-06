@@ -33,12 +33,6 @@ tableRouter.post("/", isLoggedIn, async (req, res, next) => {
       el.userId = user._id;
     });
 
-    const guestsArray = guestsIdsArray.map(guestId => {
-      return {
-        userId: guestId
-      };
-    });
-
     const createdFoodAndDrinks = await FoodAndDrinks.create(foodAndDrinksArray);
     const createdFoodAndDrinksIds = createdFoodAndDrinks.map(foodAndDrink => {
       return foodAndDrink._id;
@@ -47,10 +41,11 @@ tableRouter.post("/", isLoggedIn, async (req, res, next) => {
     const table = await Table.create({
       date,
       time,
-      location: { address, city },
+      address,
+      city,
       userId: user._id,
       foodAndDrinks: createdFoodAndDrinksIds,
-      guests: guestsArray
+      guests: guestsIdsArray
     });
 
     res.status(201).json(table);
@@ -90,7 +85,7 @@ tableRouter.put("/:id", isLoggedIn, async (req, res, next) => {
 
   const id = req.params.id; // from the cookie and session
   try {
-    const tableUpdated = await Table.updateOne(
+    const tableUpdated = await Table.findOneAndUpdate(
       { _id: id },
       {
         date,
@@ -99,7 +94,8 @@ tableRouter.put("/:id", isLoggedIn, async (req, res, next) => {
         city,
         foodAndDrinksArray,
         guestsIdsArray
-      }
+      },
+      { new: true }
     );
     res.status(200).json(tableUpdated);
   } catch (err) {

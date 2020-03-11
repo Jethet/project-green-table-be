@@ -36,6 +36,7 @@ profileRouter.get("/", async (req, res, next) => {
   try {
     const user = await User.findById(req.session.currentUser._id).populate({
       path: "table",
+      path: "tableInvites",
       // Populate the nested field foodAndDrinks inside of each table
       populate: { path: "foodAndDrinks" }
     });

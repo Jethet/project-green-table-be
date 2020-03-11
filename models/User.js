@@ -13,7 +13,8 @@ const userSchema = new Schema({
     glutenFree: Boolean,
     nonAlcohol: Boolean
   },
-  table: [{ type: Schema.Types.ObjectId, ref: "Table" }]
+  table: [{ type: Schema.Types.ObjectId, ref: "Table" }],
+  tableInvites: [{ type: Schema.Types.ObjectId, ref: "Table" }]
 });
 // change model: tableCreated and tableInvited, to allow for invitations
 

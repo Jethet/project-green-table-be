@@ -49,6 +49,13 @@ tableRouter.post("/", isLoggedIn, async (req, res, next) => {
         }
       }
     );
+    console.log("tableID:", table._id);
+    console.log("guestIdsArray:", guestsIdsArray);
+    await User.updateMany(
+      { _id: { $in: guestsIdsArray } },
+      { $push: { tableInvites: table._id } },
+      { new: true}
+    );
 
     res.status(201).json(table);
   } catch (err) {
@@ -65,9 +72,9 @@ tableRouter.get("/all", isLoggedIn, async (req, res, next) => {
 });
 
 // GET      /table/:id  - gets one table JSON data from server
-tableRouter.get("/:id", isLoggedIn, async (req, res, next) => {
+tableRouter.get("/:id", async (req, res, next) => {
   try {
-    const table = await Table.findById(req.params.id); //this params refers to what is after the /: in the url
+    const table = await Table.findById(req.params.id).populate("guests userId foodAndDrinks"); //this params refers to what is after the /: in the url
     res.status(200).json(table);
   } catch (err) {
     res.status(500).json(err);
@@ -102,9 +109,7 @@ tableRouter.put("/:id", isLoggedIn, async (req, res, next) => {
 tableRouter.delete("/:id", isLoggedIn, async (req, res, next) => {
   try {
     await Table.findByIdAndRemove(req.params.id);
-    req.session.destroy(function(err) {
-      res.status(204).send();
-    });
+    res.status(204).send();
   } catch (err) {
     res.status(500).json(err);
   }

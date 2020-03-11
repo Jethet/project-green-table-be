@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const Table = require("./Table");
 
 const userSchema = new Schema({
-  username: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   imageURL: String,
   city: String,
@@ -15,6 +15,7 @@ const userSchema = new Schema({
   },
   table: [{ type: Schema.Types.ObjectId, ref: "Table" }]
 });
+// change model: tableCreated and tableInvited, to allow for invitations
 
 const User = mongoose.model("User", userSchema);
 

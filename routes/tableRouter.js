@@ -8,14 +8,7 @@ const FoodAndDrinks = require("../models/FoodAndDrinks");
 // POST     /table    Sends table JSON data to server, create new table
 tableRouter.post("/", isLoggedIn, async (req, res, next) => {
   try {
-    const {
-      date,
-      time,
-      address,
-      city,
-      foodAndDrinksArray,
-      guestsIdsArray
-    } = req.body; // request body
+    const { date, time, address, city, foodAndDrinksArray, guestsIdsArray } = req.body; // request body
 
     console.log({
       date,
@@ -48,6 +41,15 @@ tableRouter.post("/", isLoggedIn, async (req, res, next) => {
       guests: guestsIdsArray
     });
 
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      {
+        $push: {
+          table: table._id
+        }
+      }
+    );
+
     res.status(201).json(table);
   } catch (err) {
     res.status(500).json(err);
@@ -74,14 +76,7 @@ tableRouter.get("/:id", isLoggedIn, async (req, res, next) => {
 
 // PUT      /table/:id  - updates a table's JSON data and sends to server
 tableRouter.put("/:id", isLoggedIn, async (req, res, next) => {
-  const {
-    date,
-    time,
-    address,
-    city,
-    foodAndDrinksArray,
-    guestsIdsArray
-  } = req.body;
+  const { date, time, address, city, foodAndDrinksArray, guestsIdsArray } = req.body;
 
   const id = req.params.id; // from the cookie and session
   try {

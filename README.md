@@ -50,7 +50,12 @@ To use the app, someone has to sign up. They have to provide their username, cit
 1. Homepage (splashpage)
 2. Page for sign-up
 3. Page for log-in
-4. Table page with form to create table, invite friends, communicate information regarding food and drinks, plus a button to delete own tables.
+4. Table page with form to create table, invite friends, and communicate information regarding food and drinks
+5. Profile page with options to add avatar/picture, dropdown menu to edit username and city, change password or delete account, and button to log out. This page also shows the overview of the tables the host has organised plus a button to delete own tables.
+6. Invitation page where the user (either host or guest) can see the tables for which they have been invited.
+7. Details page where the user can see who has been invited for a table and what food people will bring to the table.
+8. Page with credits for pictures and font used for the app.
+, plus a button to delete own tables.
 5. Profile page with options to add avatar/picture, dropdown menu to edit username and city, change password or delete account, and button to log out.
 6. Page with credits for pictures and font used for the app.
 

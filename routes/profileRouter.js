@@ -34,12 +34,16 @@ profileRouter.get("/:username", async (req, res, next) => {
 // GET      /profile  - gets current (logged in) users profile
 profileRouter.get("/", async (req, res, next) => {
   try {
-    const user = await User.findById(req.session.currentUser._id).populate({
-      path: "table",
-      path: "tableInvites",
-      // Populate the nested field foodAndDrinks inside of each table
-      populate: { path: "foodAndDrinks" }
-    });
+    const user = await User.findById(req.session.currentUser._id)
+      .populate({
+        path: "table",
+        // Populate the nested field foodAndDrinks inside of each table
+        populate: { path: "userId foodAndDrinks" }
+      })
+      .populate({
+        path: "tableInvites",
+        populate: { path: "userId foodAndDrinks" }
+      });
     // from the cookie and session
     res.status(200).json(user);
   } catch (err) {

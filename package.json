@@ -17,13 +17,15 @@
     "express": "~4.16.1",
     "express-session": "^1.16.1",
     "http-errors": "^1.7.2",
+    "minimist": "^1.2.5",
     "mongoose": ">=5.7.5",
     "morgan": "~1.9.1",
     "node-gyp": "^4.0.0",
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
-    "nodemon": "^1.19.0"
+    "nodemon": "^1.19.0",
+    "minimalist": ">=1.2.2"
   },
   "engines": {
     "node": "13.8.0"
